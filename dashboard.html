@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
-            padding: 30px;
+            padding: 20px;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -19,7 +19,7 @@
             width: 100%;
             max-width: 1000px;
             background-color: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             box-sizing: border-box;
@@ -42,6 +42,7 @@
             text-transform: uppercase;
             margin: 0;
             text-align: center;
+            padding: 0 10px;
         }
 
         .logo-kanan {
@@ -54,6 +55,7 @@
         .logo-kanan img {
             width: 140px; 
             height: auto;
+            max-width: 100%;
         }
 
         /* Baris Kontrol (Tombol Baru & Filter) agar sejajar */
@@ -62,6 +64,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            gap: 15px;
         }
 
         /* Tombol Buat Invoice Baru */
@@ -75,6 +78,7 @@
             font-size: 14px;
             border-radius: 5px;
             transition: background 0.2s;
+            white-space: nowrap;
         }
 
         .btn-baru:hover {
@@ -85,13 +89,14 @@
         .filter-wrapper {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .filter-wrapper label {
             font-size: 14px;
             font-weight: bold;
             color: #1e40af;
-            margin-right: 10px;
+            white-space: nowrap;
         }
 
         .select-filter {
@@ -107,12 +112,22 @@
             outline: none;
         }
 
+        /* Pembungkus tabel agar bisa di-scroll di HP */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+
         /* Desain Tabel Rekap */
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
             text-align: left;
+            min-width: 750px; /* Menjaga tabel tidak gepeng di layar HP */
         }
 
         th {
@@ -153,6 +168,49 @@
         .btn-cetak:hover {
             background-color: #2563eb;
         }
+
+        /* RESPONSIVE UNTUK LAYAR HANDPHONE */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .dashboard-header {
+                flex-direction: column-reverse; /* Logo di atas, judul di bawah */
+                text-align: center;
+                gap: 15px;
+                min-height: auto;
+                margin-bottom: 20px;
+            }
+
+            .logo-kanan {
+                position: static !important;
+                transform: none !important;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .btn-baru {
+                text-align: center;
+            }
+
+            .filter-wrapper {
+                justify-content: space-between;
+            }
+
+            .select-filter {
+                flex-grow: 1;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -182,22 +240,24 @@
             </div>
         </div>
 
-        <!-- Tabel Rekap Data -->
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 20%;">Tanggal</th>
-                    <th style="width: 15%;">No BSZ</th>
-                    <th style="width: 25%;">Nama Donatur</th>
-                    <th style="width: 15%;">Kategori</th>
-                    <th style="width: 15%;">Jumlah</th>
-                    <th style="width: 10%;">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="listInvoice">
-                <!-- Data otomatis masuk lewat JavaScript -->
-            </tbody>
-        </table>
+        <!-- Pembungkus Tabel yang Responsif -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Tanggal</th>
+                        <th style="width: 15%;">No BSZ</th>
+                        <th style="width: 25%;">Nama Donatur</th>
+                        <th style="width: 15%;">Kategori</th>
+                        <th style="width: 15%;">Jumlah</th>
+                        <th style="width: 10%;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="listInvoice">
+                    <!-- Data otomatis masuk lewat JavaScript -->
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -214,12 +274,11 @@
             
             ruteTabel.innerHTML = "";
 
-            // Fungsi cerdas mengubah teks "Bogor, 13 Juli 2026" menjadi format tanggal sistem (Date)
             function ubahKeTanggalSistem(teksTanggal) {
                 if (!teksTanggal || !teksTanggal.includes(',')) return null;
                 try {
                     let bagianTanggal = teksTanggal.split(',')[1].trim().toLowerCase();
-                    let pecahan = bagianTanggal.split(' '); // contoh: ["13", "juli", "2026"]
+                    let pecahan = bagianTanggal.split(' '); 
                     
                     if(pecahan.length < 3) return null;
 
@@ -243,12 +302,11 @@
 
             let hariIni = new Date();
 
-            // PROSES PENYARINGAN DATA
             let dataDisaring = semuaData.filter(item => {
                 if (pilihanFilter === 'semua') return true;
 
                 let tanggalItem = ubahKeTanggalSistem(item.tanggal);
-                if (!tanggalItem) return true; // Munculkan data jika format teks di luar standar agar tidak hilang
+                if (!tanggalItem) return true; 
 
                 let selisihWaktu = hariIni - tanggalItem;
                 let selisihHari = selisihWaktu / (1000 * 60 * 60 * 24);
@@ -269,13 +327,11 @@
                 return true;
             });
 
-            // Jika hasil filter kosong
             if (dataDisaring.length === 0) {
                 ruteTabel.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af; padding: 20px;">Tidak ada data resi pada periode ini.</td></tr>`;
                 return;
             }
 
-            // Tampilkan data yang lolos saringan
             dataDisaring.forEach(item => {
                 let baris = document.createElement('tr');
 
