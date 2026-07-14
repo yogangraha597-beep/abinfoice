@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Bukti Setor Zakat</title>
+    <style>
+        /* Pengaturan umum */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* Ukuran Kertas A5 Landscape */
+        .a5-container {
+            width: 210mm; 
+            height: 150mm; 
+            background-color: white;
+            padding: 9mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden; 
+        }
+
+        /* Bagian Header (Kiri & Kanan) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 11px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .header-logo img {
+            width: 150px; 
+        }
+
+        /* Judul Tengah */
+        .title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Tabel untuk Data Form */
+        table {
+            width: 100%;
+            font-size: 11px;
+            font-weight: bold;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 2px 0;
+            vertical-align: top;
+        }
+
+        .kolom-label {
+            width: 130px;
+        }
+
+        .kolom-titikdua {
+            width: 15px;
+        }
+
+        /* Tampilan Select (Dropdown Kategori) */
+        select {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            padding: 2px;
+        }
+
+        /* Bagian Doa / Bahasa Arab */
+        .doa-section {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .doa-arab {
+            font-size: 16px; /* Ukuran disesuaikan agar tulisan Arab terlihat jelas */
+            font-weight: bold;
+            margin-bottom: 5px;
+            direction: rtl; /* Memastikan arah ketik dari kanan ke kiri */
+        }
+
+        .doa-arti {
+            font-size: 9px;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        /* Bagian Tanda Tangan */
+        .signature-section {
+            margin-top: 10px; 
+            margin-left: auto; 
+            margin-right: 1mm; 
+            width: 100px; 
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .signature-space {
+            height: 60px;
+            position: relative;
+            margin: 5px 0;
+        }
+
+        /* Tempat Tanda Tangan dan Stempel/Logo tipis */
+        .stempel {
+            height: 50px;
+            position: absolute;
+            top: 5px;
+            left: -20px;
+            opacity: 0.3; 
+            z-index: 1;
+        }
+
+        .ttd {
+            height: 50px;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        /* Footer / Disclaimer */
+        .footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 15mm;
+            right: 15mm;
+            text-align: center;
+            font-size: 9px;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        /* Tombol Print */
+        .btn-print {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #1e40af;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Saat dicetak (Media Print asli milikmu) */
+        @media print { 
+            body { 
+                background-color: rgb(164, 164, 164); 
+                padding: 0; 
+                margin: 0;
+            } 
+            .nav-back, .btn-print { 
+                display: none; 
+            } 
+            .a5-container { 
+                box-shadow: none; 
+                margin: 0; 
+                width: 210mm; 
+                height: 147mm; 
+                padding: 10mm;
+            } 
+            select { 
+                border: none; 
+                appearance: none; 
+                -webkit-appearance: none; 
+                -moz-appearance: none; 
+                background: transparent;
+                outline: none;
+            } 
+            @page { 
+                size: A5 landscape; 
+                margin: 0; 
+            } 
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        /* Efek highlight ringan saat kursor di atas teks yang bisa diedit */
+        [contenteditable="true"]:hover {
+            background-color: #fffbeb;
+            outline: 1px dashed #fbbf24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-back" style="position: fixed; top: 70px; left: 20px;">
+        <a href="dashboard.html" style="color: #1e40af; font-weight: bold; text-decoration: none;">&laquo; Kembali ke Dashboard</a>
+    </div>
+
+    <!-- Tombol Cetak Utama -->
+    <button class="btn-print" onclick="simpanDanMulaiPrint()">Review & Cetak PDF</button>
+
+    <!-- Kertas A5 -->
+    <div class="a5-container">
+        
+        <div class="header">
+            <div>
+                Ref<br>
+                Ijin Operasional : SK Kanwil Kemenag RI No.493 Tahun 2022<br>
+                NPWP Yayasan Al Bunyan : 02.595.100.5-404.000
+            </div>
+            <div class="header-logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+        </div>
+
+        <div class="title">BUKTI SETOR ZAKAT</div>
+
+        <table>
+            <tr>
+                <td class="kolom-label">No Bukti Setor Zakat</td>
+                <td class="kolom-titikdua">:</td>
+                <td id="valNoBsz" contenteditable="false">BSZ-AB400000</td>
+            </tr>
+            <tr>
+                <td>Telah Terima Dari</td>
+                <td>:</td>
+                <td id="valNama" contenteditable="true">INDRA GUNAWAN</td>
+            </tr>
+            <tr>
+                <td>NPWP</td>
+                <td>:</td>
+                <td contenteditable="true">-</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td contenteditable="true">Jl. Bambu Apus Vi No 3 Pondok Bambu Jakarta Timur 13430</td>
+            </tr>
+            <tr>
+                <td>No Hp</td>
+                <td>:</td>
+                <td contenteditable="true">081210462572</td>
+            </tr>
+            <tr>
+                <td>Jumlah</td>
+                <td>:</td>
+                <td id="valJumlah" contenteditable="true">Rp200.000</td>
+            </tr>
+            <tr>
+                <td>Terbilang</td>
+                <td>:</td>
+                <td contenteditable="true">Dua Ratus Ribu Rupiah</td>
+            </tr>
+            <tr>
+                <td>Untuk Pembayaran</td>
+                <td>:</td>
+                <td>
+                    <select id="valKategori">
+                        <option value="Infaq Yatim">Infaq Yatim</option>
+                        <option value="Zakat Maal">Zakat Maal</option>
+                        <option value="Sedekah Subuh">Sedekah Subuh</option>
+                        <option value="Sedekah Jum'at">Sedekah Jum'at</option>
+                        <option value="Infaq Shadaqoh">Infaq Shadaqoh</option>
+                        <option value="Zakat Palestina">Zakat Palestina</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Teks Arab Kembali Digunakan (Aman Menggunakan window.print) -->
+        <div class="doa-section">
+            <div class="doa-arab" contenteditable="true">
+                آجَرَكَ اللهُ فِيْمَا اَعْطَيْتَ، وَبَارَكَ فِيْمَا اَبْقَيْتَ وَجَعَلَهُ كَ طَهُوْرًا
+            </div>
+            <div class="doa-arti" contenteditable="true">
+                "Semoga Allah SWT memberikan pahala atas harta yang telah dikeluarkan dan memberkahi bagi harta yang tersisa dan mudah-mudahan Allah SWT menjadikan kesucian bagimu"
+            </div>
+        </div>
+
+        <!-- Tanda Tangan dan Tanggal -->
+        <div class="signature-section">
+            <div id="valTanggal" contenteditable="true" style="margin-bottom: 5px;">
+                Bogor, 13 Juli 2026
+            </div>
+            <div>PENERIMA</div>
+            <div class="signature-space">
+                <img src="logo.png" alt="Stempel" class="stempel">
+                <img src="ttd.png" alt="Tanda Tangan" class="ttd">
+            </div>
+            <div contenteditable="true">TRI AMBAR NIGRUM</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Menunaikan Zakat di LAZ Al Bunyan dapat menjadi Pengurang Penghasilan Bruto dalam menghitung Pajak Penghasilan Kena Pajak (PKP)<br>berdasarkan Peraturan Direktorat Jenderal Pajak Nomor PER – 04 / PJ / 2022.<br>
+            DISCLAIMER : Bahwasanya dana yang disalurkan adalah benar dana di dapat dari cara yang halal Tidak terkait dengan TINDAK PINDANA PENCUCIAN UANG serta TINDAK PIDANA LAINNYA
+        </div>
+        
+    </div>
+
+    <!-- Logika JavaScript Sistem -->
+    <script>
+        function simpanDanMulaiPrint() {
+            let noBsz = document.getElementById('valNoBsz').innerText;
+            let nama = document.getElementById('valNama').innerText;
+            let jumlah = document.getElementById('valJumlah').innerText;
+            let kategori = document.getElementById('valKategori').value;
+            let tanggal = document.getElementById('valTanggal').innerText;
+
+            let urlParams = new URLSearchParams(window.location.search);
+            let idCetak = urlParams.get('cetak');
+
+            // 1. Validasi & Simpan Data ke Dashboard
+            let dataLama = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+            let indexData = dataLama.findIndex(x => x.noBsz === noBsz);
+
+            if (indexData !== -1 && idCetak !== noBsz) {
+                alert("MAAF! Nomor " + noBsz + " sudah digunakan untuk donatur lain.\nSilakan refresh halaman ini agar nomor diperbarui otomatis.");
+                return; 
+            }
+
+            let dataBaru = { noBsz, nama, jumlah, kategori, tanggal };
+            if(indexData === -1) {
+                dataLama.push(dataBaru);
+            } else {
+                dataLama[indexData] = dataBaru;
+            }
+            localStorage.setItem('kumpulanInvoice', JSON.stringify(dataLama));
+
+            // 2. Buka Jendela Review / Print Preview bawaan Browser
+            window.print();
+        }
+
+        window.onload = function() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let idCetak = urlParams.get('cetak');
+            let semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+
+            if(idCetak) {
+                // Mode Cetak Ulang dari Dashboard
+                let dataDitemukan = semuaData.find(x => x.noBsz === idCetak);
+                if(dataDitemukan) {
+                    document.getElementById('valNoBsz').innerText = dataDitemukan.noBsz;
+                    document.getElementById('valNama').innerText = dataDitemukan.nama;
+                    document.getElementById('valJumlah').innerText = dataDitemukan.jumlah;
+                    document.getElementById('valKategori').value = dataDitemukan.kategori;
+                    document.getElementById('valTanggal').innerText = dataDitemukan.tanggal;
+                }
+            } else {
+                // Mode Baru: Generate Nomor Otomatis Berurutan
+                let angkaMulai = 4000; 
+                let angkaTertinggi = 0;
+
+                if (semuaData.length > 0) {
+                    semuaData.forEach(item => {
+                        let nomorSaja = parseInt(item.noBsz.replace('BSZ-AB', ''));
+                        if (!isNaN(nomorSaja) && nomorSaja > angkaTertinggi) {
+                            angkaTertinggi = nomorSaja;
+                        }
+                    });
+                    
+                    if (angkaTertinggi >= angkaMulai) {
+                        angkaMulai = angkaTertinggi + 1;
+                    }
+                }
+                document.getElementById('valNoBsz').innerText = 'BSZ-AB' + angkaMulai;
+            }
+        }
+    </script>
+</body>
+</html>
