@@ -127,7 +127,7 @@
             border-collapse: collapse;
             font-size: 14px;
             text-align: left;
-            min-width: 750px; /* Menjaga tabel tidak gepeng di layar HP */
+            min-width: 750px; 
         }
 
         th {
@@ -180,7 +180,7 @@
             }
 
             .dashboard-header {
-                flex-direction: column-reverse; /* Logo di atas, judul di bawah */
+                flex-direction: column-reverse; 
                 text-align: center;
                 gap: 15px;
                 min-height: auto;
@@ -221,7 +221,7 @@
         <div class="dashboard-header">
             <h2>Dashboard Rekap Invoice</h2>
             <div class="logo-kanan">
-                <img src="logo.png" alt="Logo LAZ Al Bunyan">
+                <img src="Logo.png" alt="Logo LAZ Al Bunyan">
             </div>
         </div>
 
@@ -332,7 +332,12 @@
                 return;
             }
 
-            dataDisaring.forEach(item => {
+            /* ====================================================
+               PERUBAHAN BARU: Urutkan data terbaru paling atas (di-reverse)
+               ==================================================== */
+            let dataTerbaruPalingAtas = [...dataDisaring].reverse();
+
+            dataTerbaruPalingAtas.forEach(item => {
                 let baris = document.createElement('tr');
 
                 baris.innerHTML = `
