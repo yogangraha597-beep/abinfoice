@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Bukti Setor Zakat</title>
     <style>
-        /* Pengaturan umum layar */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
@@ -19,7 +18,6 @@
             box-sizing: border-box;
         }
 
-        /* Menu Header Non-Cetak (Di atas invoice) */
         .no-print-header {
             display: flex;
             justify-content: space-between;
@@ -53,11 +51,10 @@
             background-color: #1d4ed8;
         }
 
-        /* Kertas A5 (Fleksibel di Mobile, Kaku saat Cetak) */
         .a5-container {
             width: 100%;
             max-width: 210mm;
-            height: auto; /* Memungkinkan memanjang di layar kecil agar tidak menumpuk */
+            height: auto; 
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -65,16 +62,14 @@
             box-sizing: border-box;
         }
 
-        /* Saat di Layar Lebar (Komputer/Laptop) */
         @media (min-width: 768px) {
             .a5-container {
-                height: 148mm; /* Lock A5 standard di PC */
+                height: 148mm; 
                 padding: 9mm;
                 overflow: hidden;
             }
         }
 
-        /* Bagian Header (Kiri & Kanan) */
         .header {
             display: flex;
             justify-content: space-between;
@@ -90,7 +85,6 @@
             max-width: 100%;
         }
 
-        /* Judul Tengah */
         .title {
             text-align: center;
             font-size: 18px;
@@ -99,7 +93,6 @@
             margin-bottom: 20px;
         }
 
-        /* Tabel untuk Data Form */
         table {
             width: 100%;
             font-size: 11px;
@@ -120,7 +113,6 @@
             width: 15px;
         }
 
-        /* Tampilan Select (Dropdown Kategori) */
         select {
             font-family: Arial, sans-serif;
             font-weight: bold;
@@ -130,7 +122,6 @@
             background-color: white;
         }
 
-        /* Bagian Doa / Bahasa Arab */
         .doa-section {
             text-align: center;
             margin-top: 15px;
@@ -149,7 +140,6 @@
             font-weight: bold;
         }
 
-        /* Bagian Tanda Tangan */
         .signature-section {
             margin-top: 15px; 
             margin-left: auto; 
@@ -184,9 +174,8 @@
             z-index: 2;
         }
 
-        /* Footer / Disclaimer */
         .footer {
-            position: relative; /* Mengalir ke bawah secara dinamis pada HP */
+            position: relative; 
             margin-top: 30px;
             text-align: center;
             font-size: 9px;
@@ -195,7 +184,6 @@
             width: 100%;
         }
 
-        /* Posisi Footer Mengunci di bawah khusus layar laptop */
         @media (min-width: 768px) {
             .footer {
                 position: absolute;
@@ -207,7 +195,6 @@
             }
         }
 
-        /* RESPONSIF KHUSUS MOBILE PHONE */
         @media (max-width: 600px) {
             .no-print-header {
                 flex-direction: column-reverse;
@@ -236,9 +223,6 @@
             }
         }
 
-        /* ====================================================
-           SISTEM CETAK PRESISI A5 LANDSCAPE (TIDAK BOLEH UBAH)
-           ==================================================== */
         @media print { 
             body { 
                 background-color: rgb(164, 164, 164); 
@@ -292,7 +276,6 @@
             }
         }
 
-        /* Efek highlight ringan saat teks bisa diedit */
         [contenteditable="true"]:hover {
             background-color: #fffbeb;
             outline: 1px dashed #fbbf24;
@@ -301,7 +284,6 @@
 </head>
 <body>
 
-    <!-- Bar Navigasi & Print di Atas Invoice -->
     <div class="no-print-header">
         <div class="nav-back">
             <a href="dashboard.html">&laquo; Kembali ke Dashboard</a>
@@ -309,7 +291,6 @@
         <button class="btn-print" onclick="simpanDanMulaiPrint()">Review & Cetak PDF</button>
     </div>
 
-    <!-- Kertas A5 -->
     <div class="a5-container">
         
         <div class="header">
@@ -377,7 +358,6 @@
             </tr>
         </table>
 
-        <!-- Teks Arab -->
         <div class="doa-section">
             <div class="doa-arab" contenteditable="true">
                 آجَرَكَ اللهُ فِيْمَا اَعْطَيْتَ، وَبَارَكَ فِيْمَا اَبْقَيْتَ وَجَعَلَهُ لَكَ طَهُوْرًا
@@ -387,20 +367,17 @@
             </div>
         </div>
 
-        <!-- Tanda Tangan dan Tanggal -->
         <div class="signature-section">
-            <div id="valTanggal" contenteditable="true" style="margin-bottom: 5px;">
-                Bogor, 13 Juli 2026
-            </div>
+            <!-- Kolom ini akan diisi tanggal realtime Indonesia secara otomatis -->
+            <div id="valTanggal" contenteditable="true" style="margin-bottom: 5px;"></div>
             <div>PENERIMA</div>
             <div class="signature-space">
-                <img src="logo.png" alt="Stempel" class="stempel">
+                <img src="Logo.png" alt="Stempel" class="stempel">
                 <img src="ttd.png" alt="Tanda Tangan" class="ttd">
             </div>
             <div contenteditable="true">TRI AMBAR NIGRUM</div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             Menunaikan Zakat di LAZ Al Bunyan dapat menjadi Pengurang Penghasilan Bruto dalam menghitung Pajak Penghasilan Kena Pajak (PKP)<br>berdasarkan Peraturan Direktorat Jenderal Pajak Nomor PER – 04 / PJ / 2022.<br>
             DISCLAIMER : Bahwasanya dana yang disalurkan adalah benar dana di dapat dari cara yang halal Tidak terkait dengan TINDAK PINDANA PENCUCIAN UANG serta TINDAK PIDANA LAINNYA
@@ -408,7 +385,6 @@
         
     </div>
 
-    <!-- Logika JavaScript Sistem -->
     <script>
         function simpanDanMulaiPrint() {
             let noBsz = document.getElementById('valNoBsz').innerText;
@@ -454,7 +430,19 @@
                     document.getElementById('valTanggal').innerText = dataDitemukan.tanggal;
                 }
             } else {
-                let angkaMulai = 400000; 
+                /* ====================================================
+                   PERUBAHAN BARU: Generate Tanggal Real-time format Indonesia
+                   ==================================================== */
+                let hariIni = new Date();
+                let tgl = hariIni.getDate();
+                let daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                let bln = daftarBulan[hariIni.getMonth()];
+                let thn = hariIni.getFullYear();
+                
+                // Set otomatis ke element HTML
+                document.getElementById('valTanggal').innerText = 'Bogor, ' + tgl + ' ' + bln + ' ' + thn;
+
+                let angkaMulai = 4000; 
                 let angkaTertinggi = 0;
 
                 if (semuaData.length > 0) {
