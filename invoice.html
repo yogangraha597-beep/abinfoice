@@ -110,7 +110,7 @@
         }
 
         .kolom-titikdua {
-            width: 15px;
+            width: 20px;
         }
 
         select {
@@ -128,20 +128,20 @@
         }
 
         .doa-arab {
-            font-size: 16px; 
+            font-size: 15px; 
             font-weight: bold;
             margin-bottom: 5px;
             direction: rtl; 
         }
 
         .doa-arti {
-            font-size: 9px;
+            font-size: 10px;
             font-style: italic;
             font-weight: bold;
         }
 
         .signature-section {
-            margin-top: 15px; 
+            margin-top: -1px; 
             margin-left: auto; 
             margin-right: 1mm; 
             width: 150px; 
@@ -169,8 +169,8 @@
         .ttd {
             height: 50px;
             position: absolute;
-            top: 10px;
-            left: 20px;
+            top: 11px;
+            left: 40px;
             z-index: 2;
         }
 
@@ -188,44 +188,16 @@
             .footer {
                 position: absolute;
                 bottom: 10mm;
-                left: 15mm;
-                right: 15mm;
+                left: 10mm;
+                right: 10mm;
                 margin-top: 0;
                 width: auto;
             }
         }
 
-        @media (max-width: 600px) {
-            .no-print-header {
-                flex-direction: column-reverse;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .btn-print {
-                width: 100%;
-                text-align: center;
-                padding: 12px;
-            }
-            .nav-back {
-                text-align: center;
-            }
-            .header {
-                flex-direction: column-reverse;
-                align-items: center;
-                text-align: center;
-                gap: 10px;
-            }
-            .kolom-label {
-                width: 110px;
-            }
-            .doa-arab {
-                font-size: 14px;
-            }
-        }
-
         @media print { 
             body { 
-                background-color: rgb(164, 164, 164); 
+                background-color: #fff; 
                 padding: 0 !important; 
                 margin: 0 !important;
                 display: block !important;
@@ -237,48 +209,34 @@
                 box-shadow: none !important; 
                 margin: 0 !important; 
                 width: 210mm !important; 
-                height: 147mm !important; 
-                padding: 10mm !important;
+                height: 148mm !important; 
+                padding: 5mm !important;
                 display: block !important;
                 position: relative !important;
                 overflow: hidden !important;
             } 
-            .header {
-                display: flex !important;
-                flex-direction: row !important;
-                justify-content: space-between !important;
-                align-items: flex-start !important;
-                text-align: left !important;
-            }
             .footer {
                 position: absolute !important;
                 bottom: 10mm !important;
-                left: 15mm !important;
-                right: 15mm !important;
+                left: 13mm !important;
+                right: 12mm !important;
                 margin-top: 0 !important;
                 width: auto !important;
             }
             select { 
                 border: none !important; 
                 appearance: none !important; 
-                -webkit-appearance: none !important; 
-                -moz-appearance: none !important; 
                 background: transparent !important;
-                outline: none !important;
             } 
             @page { 
                 size: A5 landscape; 
                 margin: 0; 
             } 
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
         }
 
         [contenteditable="true"]:hover {
             background-color: #fffbeb;
-            outline: 1px dashed #fbbf24;
+            outline: 2px dashed #fbbf24;
         }
     </style>
 </head>
@@ -300,7 +258,7 @@
                 NPWP Yayasan Al Bunyan : 02.595.100.5-404.000
             </div>
             <div class="header-logo">
-                <img src="Logo.png" alt="Logo">
+                <img src="logo.png" alt="Logo">
             </div>
         </div>
 
@@ -310,27 +268,27 @@
             <tr>
                 <td class="kolom-label">No Bukti Setor Zakat</td>
                 <td class="kolom-titikdua">:</td>
-                <td id="valNoBsz" contenteditable="false">BSZ-AB400000</td>
+                <td id="valNoBsz" contenteditable="false">Membuat Nomor...</td>
             </tr>
             <tr>
                 <td>Telah Terima Dari</td>
                 <td>:</td>
-                <td id="valNama" contenteditable="true">INDRA GUNAWAN</td>
+                <td id="valNama" contenteditable="true">Masukan Nama</td>
             </tr>
             <tr>
                 <td>NPWP</td>
                 <td>:</td>
-                <td contenteditable="true">-</td>
+                <td id="valNpwp" contenteditable="true">-</td>
             </tr>
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td contenteditable="true">Jl. Bambu Apus Vi No 3 Pondok Bambu Jakarta Timur 13430</td>
+                <td id="valAlamat" contenteditable="true">masukan alamat</td>
             </tr>
             <tr>
                 <td>No Hp</td>
                 <td>:</td>
-                <td contenteditable="true">081210462572</td>
+                <td id="valNoHp" contenteditable="true">no</td>
             </tr>
             <tr>
                 <td>Jumlah</td>
@@ -340,7 +298,7 @@
             <tr>
                 <td>Terbilang</td>
                 <td>:</td>
-                <td contenteditable="true">Dua Ratus Ribu Rupiah</td>
+                <td id="valTerbilang" contenteditable="false" style="background-color: transparent; outline: none;">Dua Ratus Ribu Rupiah</td>
             </tr>
             <tr>
                 <td>Untuk Pembayaran</td>
@@ -351,31 +309,64 @@
                         <option value="Zakat Maal">Zakat Maal</option>
                         <option value="Sedekah Subuh">Sedekah Subuh</option>
                         <option value="Sedekah Jum'at">Sedekah Jum'at</option>
-                        <option value="Infaq Shadaqoh">Infaq Shadaqoh</option>
-                        <option value="Zakat Palestina">Zakat Palestina</option>
+                        <option value="Zakat for Palestina">Zakat For Palestina</option>
+                        <option value="Zakat Fitrah">Zakat Fitrah</option>
+                        <option value="Zakat Penghasilan">Zakat Penghasilan</option>
+                        <option value="Zakat Rikaz atau Hadiah">Zakat Rikaz atau Hadiah</option>
+                        <option value="Zakat Perusahaan">Zakat Perusahaan</option>
+                        <option value="Zakat Perdagangan">Zakat Perdagangan</option>
+                        <option value="Zakat Pertanian">Zakat Pertanian</option>
+                        <option value="Zakat Perternakan">Zakat Perternakan</option>
+                        <option value="Zakat Emas atau Perak ">Zakat Emas atau Perak</option>
+                        <option value="Zakat Tabungan">Zakat Tabungan</option>  
+                        <option value="Infaq Umum">Infaq Umum</option>
+                        <option value="Infaq Beras">Infaq Beras</option>
+                        <option value="Infaq Palestina">Infaq Palestina</option>
+                        <option value="Infaq Bencana">Infaq Bencana</option>
+                        <option value="Infaq Guru Ngaji atau Rumah Qur'an">Infaq Guru Ngaji atau Rumah Qur'an</option>
+                        <option value="Infaq AL-Quran">Infaq Al-Quran</option>
+                        <option value="Infaq Celengan Amal (ICA)">Infaq Celengan Amal (ICA)</option>
+                        <option value="Infaq Ramadan">Infaq Ramadan</option>
+                        <option value="Sedekah 1000 Bulan">Sedekah 1000 Bulan</option>
+                        <option value="Infaq Pendidikan">Infaq Pendidikan</option>
+                        <option value="Infaq Penghafal Qur'an">Infaq Penghafal Qur'an</option>
+                        <option value="Infaq Beasantri Anak Negeri">Infaq Beasantri Anak Negeri</option>
+                        <option value="Infaq Bantuan Modal Usaha">Infaq Bantuan Modal Usaha</option>
+                        <option value="Infaq Syiar Dakwah">Infaq Syiar Dakwah</option>
+                        <option value="Infaq Masjid">Infaq Masjid</option>
+                        <option value="Infaq Buka Puasa Dan Sahur">Infaq Buka Puasa Dan Sahur</option>
+                        <option value="Infaq Takjil">Infaq Takjil</option>
+                        <option value="Waqaf Quran">Waqaf Quran</option>
+                        <option value="Waqaf Sumur dan Air Bersih">Waqaf Sumur dan Air Bersih</option>
+                        <option value="Fidyah">Fidyah</option>
+                        <option value="Qurban">Qurban</option>
+                        <option value="Sedekah Qurban">Sedekah Qurban</option>
+                        <option value="Kaffarat ">Kaffarat</option>
+                        <option value="DSKL Lainnya ">DSKL Lainnya</option>
+                        <option value="Dana Non Halal "> Dana Non Halal</option>
+                        <option value="Dana Titipan "> Dana  Titipan</option>
                     </select>
                 </td>
             </tr>
         </table>
 
         <div class="doa-section">
-            <div class="doa-arab" contenteditable="true">
+            <div id="valDoaArab" class="doa-arab" contenteditable="true">
                 آجَرَكَ اللهُ فِيْمَا اَعْطَيْتَ، وَبَارَكَ فِيْمَا اَبْقَيْتَ وَجَعَلَهُ لَكَ طَهُوْرًا
             </div>
-            <div class="doa-arti" contenteditable="true">
+            <div id="valDoaArti" class="doa-arti" contenteditable="true">
                 "Semoga Allah SWT memberikan pahala atas harta yang telah dikeluarkan dan memberkahi bagi harta yang tersisa dan mudah-mudahan Allah SWT menjadikan kesucian bagimu"
             </div>
         </div>
 
         <div class="signature-section">
-            <!-- Kolom ini akan diisi tanggal realtime Indonesia secara otomatis -->
             <div id="valTanggal" contenteditable="true" style="margin-bottom: 5px;"></div>
             <div>PENERIMA</div>
             <div class="signature-space">
-                <img src="Logo.png" alt="Stempel" class="stempel">
+                <img src="logo.png" alt="Stempel" class="stempel">
                 <img src="ttd.png" alt="Tanda Tangan" class="ttd">
             </div>
-            <div contenteditable="true">TRI AMBAR NIGRUM</div>
+            <div id="valPenerima" contenteditable="true">TRI AMBAR NIGRUM</div>
         </div>
 
         <div class="footer">
@@ -386,79 +377,193 @@
     </div>
 
     <script>
-        function simpanDanMulaiPrint() {
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyWUi5LevSyzNrf6cYnfWMHX7horHvRrhpz8k7_54iNty8wgq_OG-I__Mj4xRNWtiYS8Q/exec';
+
+        async function simpanDanMulaiPrint() {
             let noBsz = document.getElementById('valNoBsz').innerText;
             let nama = document.getElementById('valNama').innerText;
+            let npwp = document.getElementById('valNpwp').innerText;
+            let alamat = document.getElementById('valAlamat').innerText;
+            let noHp = document.getElementById('valNoHp').innerText;
             let jumlah = document.getElementById('valJumlah').innerText;
+            let terbilang = document.getElementById('valTerbilang').innerText;
             let kategori = document.getElementById('valKategori').value;
             let tanggal = document.getElementById('valTanggal').innerText;
+            let doaArab = document.getElementById('valDoaArab').innerText;
+            let doaArti = document.getElementById('valDoaArti').innerText;
+            let penerima = document.getElementById('valPenerima').innerText;
 
             let urlParams = new URLSearchParams(window.location.search);
             let idCetak = urlParams.get('cetak');
 
-            let dataLama = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
-            let indexData = dataLama.findIndex(x => x.noBsz === noBsz);
+            let semuaData = [];
+            if (WEB_APP_URL !== '') {
+                try {
+                    let res = await fetch(WEB_APP_URL);
+                    semuaData = await res.json();
+                } catch(e) {
+                    semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+                }
+            } else {
+                semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+            }
 
+            let indexData = semuaData.findIndex(x => x.noBsz === noBsz);
             if (indexData !== -1 && idCetak !== noBsz) {
-                alert("MAAF! Nomor " + noBsz + " sudah digunakan untuk donatur lain.\nSilakan refresh halaman ini agar nomor diperbarui otomatis.");
+                alert("Nomor " + noBsz + " sudah terdaftar di Drive. Silakan refresh.");
                 return; 
             }
 
-            let dataBaru = { noBsz, nama, jumlah, kategori, tanggal };
-            if(indexData === -1) {
+            let dataBaru = { noBsz, nama, npwp, alamat, noHp, jumlah, terbilang, kategori, tanggal, doaArab, doaArti, penerima };
+
+            if (WEB_APP_URL !== '') {
+                try {
+                    await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(dataBaru)
+                    });
+                } catch(e) {
+                    console.error("Gagal sinkronisasi ke Drive", e);
+                }
+            }
+
+            let dataLama = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+            let indexLokal = dataLama.findIndex(x => x.noBsz === noBsz);
+            if(indexLokal === -1) {
                 dataLama.push(dataBaru);
             } else {
-                dataLama[indexData] = dataBaru;
+                dataLama[indexLokal] = dataBaru;
             }
             localStorage.setItem('kumpulanInvoice', JSON.stringify(dataLama));
 
             window.print();
         }
 
-        window.onload = function() {
+        window.onload = async function() {
             let urlParams = new URLSearchParams(window.location.search);
             let idCetak = urlParams.get('cetak');
-            let semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+            let semuaData = [];
+
+            if (WEB_APP_URL !== '') {
+                try {
+                    let res = await fetch(WEB_APP_URL);
+                    semuaData = await res.json();
+                } catch(e) {
+                    semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+                }
+            } else {
+                semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
+            }
 
             if(idCetak) {
                 let dataDitemukan = semuaData.find(x => x.noBsz === idCetak);
                 if(dataDitemukan) {
                     document.getElementById('valNoBsz').innerText = dataDitemukan.noBsz;
                     document.getElementById('valNama').innerText = dataDitemukan.nama;
+                    if(dataDitemukan.npwp) document.getElementById('valNpwp').innerText = dataDitemukan.npwp;
+                    if(dataDitemukan.alamat) document.getElementById('valAlamat').innerText = dataDitemukan.alamat;
+                    if(dataDitemukan.noHp) document.getElementById('valNoHp').innerText = dataDitemukan.noHp;
                     document.getElementById('valJumlah').innerText = dataDitemukan.jumlah;
+                    if(dataDitemukan.terbilang) document.getElementById('valTerbilang').innerText = dataDitemukan.terbilang;
                     document.getElementById('valKategori').value = dataDitemukan.kategori;
                     document.getElementById('valTanggal').innerText = dataDitemukan.tanggal;
+                    if(dataDitemukan.doaArab) document.getElementById('valDoaArab').innerText = dataDitemukan.doaArab;
+                    if(dataDitemukan.doaArti) document.getElementById('valDoaArti').innerText = dataDitemukan.doaArti;
+                    if(dataDitemukan.penerima) document.getElementById('valPenerima').innerText = dataDitemukan.penerima;
                 }
             } else {
-                /* ====================================================
-                   PERUBAHAN BARU: Generate Tanggal Real-time format Indonesia
-                   ==================================================== */
                 let hariIni = new Date();
-                let tgl = hariIni.getDate();
                 let daftarBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                let bln = daftarBulan[hariIni.getMonth()];
-                let thn = hariIni.getFullYear();
-                
-                // Set otomatis ke element HTML
-                document.getElementById('valTanggal').innerText = 'Bogor, ' + tgl + ' ' + bln + ' ' + thn;
+                document.getElementById('valTanggal').innerText = 'Bogor, ' + hariIni.getDate() + ' ' + daftarBulan[hariIni.getMonth()] + ' ' + hariIni.getFullYear();
 
-                let angkaMulai = 4000; 
-                let angkaTertinggi = 0;
+                // -------------------------------------------------------------
+                // PERUBAHAN LOGIKA FORMAT BARU: BSZ-TAHUNBULANNOURUT (BSZ-26010001)
+                // -------------------------------------------------------------
+                let yy = String(hariIni.getFullYear()).slice(-2); // Mengambil 2 digit tahun (misal: 26)
+                let mm = String(hariIni.getMonth() + 1).padStart(2, '0'); // Mengambil 2 digit bulan (misal: 01)
+                
+                let prefixBulanIni = 'BSZ-' + yy + mm; // Hasil: BSZ-2601
+                let nomorMulai = 1;
 
                 if (semuaData.length > 0) {
+                    let nomorTerbesarBulanIni = 0;
                     semuaData.forEach(item => {
-                        let nomorSaja = parseInt(item.noBsz.replace('BSZ-AB', ''));
-                        if (!isNaN(nomorSaja) && nomorSaja > angkaTertinggi) {
-                            angkaTertinggi = nomorSaja;
+                        if (item.noBsz && item.noBsz.toUpperCase().startsWith(prefixBulanIni.toUpperCase())) {
+                            // Potong teks setelah prefix 'BSZ-2601' untuk mengambil 4 digit nomor urutnya
+                            let nomorStr = item.noBsz.substring(prefixBulanIni.length); 
+                            
+                            // Validasi: pastikan sisa string tersebut hanya berisi 4 digit angka (menghindari bentrok format lama)
+                            if (nomorStr.length === 4 && /^\d+$/.test(nomorStr)) {
+                                let nomorUrut = parseInt(nomorStr, 10);
+                                if (!isNaN(nomorUrut) && nomorUrut > nomorTerbesarBulanIni) {
+                                    nomorTerbesarBulanIni = nomorUrut;
+                                }
+                            }
                         }
                     });
-                    
-                    if (angkaTertinggi >= angkaMulai) {
-                        angkaMulai = angkaTertinggi + 1;
-                    }
+                    nomorMulai = nomorTerbesarBulanIni + 1;
                 }
-                document.getElementById('valNoBsz').innerText = 'BSZ-AB' + angkaMulai;
+                
+                // Gabungkan prefix dan nomor urut yang di-pad dengan 4 angka nol
+                document.getElementById('valNoBsz').innerText = prefixBulanIni + String(nomorMulai).padStart(4, '0');
             }
+
+            inisialisasiOtomatisasiNominal();
+        }
+
+        function inisialisasiOtomatisasiNominal() {
+            let elJumlah = document.getElementById('valJumlah');
+            let elTerbilang = document.getElementById('valTerbilang');
+
+            elJumlah.addEventListener('input', function() {
+                let angkaBersih = this.innerText.replace(/[^0-9]/g, '');
+                
+                if (!angkaBersih || parseInt(angkaBersih, 10) === 0) {
+                    elTerbilang.innerText = "Nol Rupiah";
+                    return;
+                }
+                
+                let nominal = parseInt(angkaBersih, 10);
+                elTerbilang.innerText = kalkulasiTeksTerbilang(nominal) + " Rupiah";
+            });
+
+            elJumlah.addEventListener('blur', function() {
+                let angkaBersih = this.innerText.replace(/[^0-9]/g, '');
+                if (!angkaBersih) {
+                    this.innerText = "Rp0";
+                    return;
+                }
+                let nominal = parseInt(angkaBersih, 10);
+                this.innerText = "Rp" + nominal.toLocaleString('id-ID');
+            });
+
+            elJumlah.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.blur();
+                }
+            });
+        }
+
+        function kalkulasiTeksTerbilang(n) {
+            if (n === 0) return ""; 
+            let kata = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+            let hasil = "";
+            
+            if (n < 12) hasil = kata[n];
+            else if (n < 20) hasil = kata[n - 10] + " Belas";
+            else if (n < 100) hasil = kalkulasiTeksTerbilang(Math.floor(n / 10)) + " Puluh " + kalkulasiTeksTerbilang(n % 10);
+            else if (n < 200) hasil = "Seratus " + kalkulasiTeksTerbilang(n - 100);
+            else if (n < 1000) hasil = kalkulasiTeksTerbilang(Math.floor(n / 100)) + " Ratus " + kalkulasiTeksTerbilang(n % 100);
+            else if (n < 2000) hasil = "Seribu " + kalkulasiTeksTerbilang(n - 1000);
+            else if (n < 1000000) hasil = kalkulasiTeksTerbilang(Math.floor(n / 1000)) + " Ribu " + kalkulasiTeksTerbilang(n % 1000);
+            else if (n < 1000000000) hasil = kalkulasiTeksTerbilang(Math.floor(n / 1000000)) + " Juta " + kalkulasiTeksTerbilang(n % 1000000);
+            else if (n < 1000000000000) hasil = kalkulasiTeksTerbilang(Math.floor(n / 1000000000)) + " Milyar " + kalkulasiTeksTerbilang(n % 1000000000);
+            else if (n < 1000000000000000) hasil = kalkulasiTeksTerbilang(Math.floor(n / 1000000000000)) + " Triliun " + kalkulasiTeksTerbilang(n % 1000000000000);
+            
+            return hasil.replace(/\s+/g, ' ').trim();
         }
     </script>
 </body>
