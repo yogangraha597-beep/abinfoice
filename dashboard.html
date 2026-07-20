@@ -3,356 +3,660 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Rekap Invoice</title>
+    <title>Dashboard Rekap Invoice - LAZ Al Bunyan</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            padding: 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f1f5f9;
             margin: 0;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            color: #1e293b;
         }
 
-        /* Container utama Dashboard */
-        .dashboard-container {
-            width: 100%;
-            max-width: 1000px;
+        .navbar {
+            background-color: #1e40af;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover {
+            background-color: #dc2626;
+        }
+
+        .main-container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 30px;
             background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
 
-        /* Susunan Header: Judul Tengah, Logo Kanan */
+        /* Header Atas: Judul & Logo */
         .dashboard-header {
-            position: relative;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            min-height: 80px;
             margin-bottom: 30px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 20px;
         }
 
-        .dashboard-header h2 {
-            color: #1e40af;
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
+        .dashboard-header h1 {
+            color: #0f4cba;
+            font-size: 26px;
+            font-weight: 800;
             margin: 0;
-            text-align: center;
-            padding: 0 10px;
+            letter-spacing: 0.5px;
         }
 
-        .logo-kanan {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
+        .logo-box img {
+            max-height: 55px;
+            width: auto;
         }
 
-        .logo-kanan img {
-            width: 140px; 
-            height: auto;
-            max-width: 100%;
-        }
-
-        /* Baris Kontrol (Tombol Baru & Filter) agar sejajar */
+        /* Bar Navigasi Aksi & Filter */
         .action-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
             gap: 15px;
+            position: relative;
         }
 
-        /* Tombol Buat Invoice Baru */
-        .btn-baru {
-            display: inline-block;
-            background-color: #1e40af;
+        .btn-create {
+            background-color: #0f4cba;
             color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
             text-decoration: none;
-            padding: 10px 20px;
             font-weight: bold;
-            font-size: 14px;
-            border-radius: 5px;
+            font-size: 15px;
             transition: background 0.2s;
-            white-space: nowrap;
+            box-shadow: 0 4px 6px rgba(15, 76, 186, 0.2);
         }
 
-        .btn-baru:hover {
-            background-color: #1d4ed8;
+        .btn-create:hover {
+            background-color: #0b3a91;
         }
 
-        /* Styling Dropdown Filter Waktu */
-        .filter-wrapper {
-            display: flex;
+        /* CSS BARU: Tombol Navigasi Rekap Laporan */
+        .btn-rekap {
+            background-color: #475569;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            transition: background 0.2s;
+            box-shadow: 0 4px 6px rgba(71, 85, 105, 0.2);
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .filter-wrapper label {
-            font-size: 14px;
-            font-weight: bold;
-            color: #1e40af;
-            white-space: nowrap;
+        .btn-rekap:hover {
+            background-color: #334155;
         }
 
-        .select-filter {
-            font-family: Arial, sans-serif;
-            font-weight: bold;
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-box {
+            padding: 10px 16px;
+            width: 280px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             font-size: 14px;
-            color: #1e40af;
-            border: 2px solid #1e40af;
-            padding: 8px 15px;
-            border-radius: 5px;
-            background-color: white;
-            cursor: pointer;
             outline: none;
         }
 
-        /* Pembungkus tabel agar bisa di-scroll di HP */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 4px;
-            border: 1px solid #e5e7eb;
+        .search-box:focus {
+            border-color: #0f4cba;
+            box-shadow: 0 0 0 3px rgba(15, 76, 186, 0.1);
         }
 
-        /* Desain Tabel Rekap */
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        /* Pemicu Filter Waktu Meta */
+        .btn-period-picker {
+            padding: 10px 14px;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             font-size: 14px;
-            text-align: left;
-            min-width: 750px; 
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #475569;
         }
-
-        th {
-            background-color: #1e40af;
-            color: white;
-            padding: 12px;
-            font-weight: bold;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #374151;
-        }
-
-        tr:hover {
+        
+        .btn-period-picker:hover {
             background-color: #f8fafc;
         }
 
-        .no-bsz-text {
-            font-weight: bold;
-            color: #000000;
+        /* Panel Dropdown Desain Meta */
+        .meta-date-panel {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid #e2e8f0;
+            display: none;
+            flex-direction: row;
+            width: 560px;
+            z-index: 100;
         }
 
-        /* Tombol Cetak Ulang di Tabel */
-        .btn-cetak {
-            display: inline-block;
+        .meta-presets {
+            width: 190px;
+            background-color: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preset-item {
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            border: none;
+            background: transparent;
+        }
+
+        .preset-item:hover, .preset-item.active {
+            background-color: #e2e8f0;
+            color: #0f4cba;
+        }
+
+        .meta-custom-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .meta-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meta-input-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-input-field label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .meta-input-field input {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .meta-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        .btn-meta-cancel {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-meta-update {
+            padding: 8px 16px;
+            background-color: #0f4cba;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Desain Tabel Premium */
+        .table-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #0f4cba;
+            color: white;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 15px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        td:last-child {
+            border-right: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Kolom Khusus Nomor Invoice tebal */
+        .td-bsz {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Tombol Cetak Biru Cerah */
+        .btn-print-table {
             background-color: #3b82f6;
             color: white;
-            text-decoration: none;
+            border: none;
             padding: 6px 14px;
-            font-size: 12px;
-            font-weight: bold;
             border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
             transition: background 0.2s;
         }
 
-        .btn-cetak:hover {
-            background-color: #2563eb;
+        .btn-print-table:hover {
+            background-color: #1d4ed8;
         }
 
-        /* RESPONSIVE UNTUK LAYAR HANDPHONE */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .dashboard-container {
-                padding: 15px;
-            }
-
-            .dashboard-header {
-                flex-direction: column-reverse; 
-                text-align: center;
-                gap: 15px;
-                min-height: auto;
-                margin-bottom: 20px;
-            }
-
-            .logo-kanan {
-                position: static !important;
-                transform: none !important;
-            }
-
-            .action-bar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-
-            .btn-baru {
-                text-align: center;
-            }
-
-            .filter-wrapper {
-                justify-content: space-between;
-            }
-
-            .select-filter {
-                flex-grow: 1;
-                text-align: center;
-            }
+        .status-msg {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-weight: 600;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        
-        <!-- Bagian Header Utama (Judul + Logo) -->
+    <div class="navbar">
+        <h2>LAZ Al Bunyan — Administrator</h2>
+        <button class="btn-logout" onclick="prosesLogout()">Keluar</button>
+    </div>
+
+    <div class="main-container">
+        <!-- Struktur Atas -->
         <div class="dashboard-header">
-            <h2>Dashboard Rekap Invoice</h2>
-            <div class="logo-kanan">
-                <img src="Logo.png" alt="Logo LAZ Al Bunyan">
+            <h1>DASHBOARD REKAP INVOICE</h1>
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo LAZ Al Bunyan">
             </div>
         </div>
 
-        <!-- Baris Aksi: Tombol Invoice Sebelah Kiri & Filter Sebelah Kanan -->
         <div class="action-bar">
-            <a href="invoice.html" class="btn-baru">+ Buat Invoice Baru</a>
+            <!-- MODIFIKASI: Ditambahkan flex wrapper agar susunan tombol rapi & berdampingan -->
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="invoice.html" class="btn-create">+ Buat Invoice Baru</a>
+                
+                <!-- Tombol Navigasi Baru Menuju Laporan Rekap -->
+                <a href="rekap.html" class="btn-rekap">
+                    <svg style="width:16px; height:16px; fill:currentColor;" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"/>
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+                    </svg>
+                    Lihat Rekap Laporan
+                </a>
+            </div>
             
-            <div class="filter-wrapper">
-                <label for="filterWaktu">Periode:</label>
-                <select id="filterWaktu" class="select-filter" onchange="tampilkanDataDashboard()">
-                    <option value="semua">Semua Data</option>
-                    <option value="mingguan">Minggu Ini (7 Hari Terakhir)</option>
-                    <option value="bulanan">Bulan Ini</option>
-                    <option value="tahunan">Tahun Ini</option>
-                </select>
+            <div class="filter-group">
+                <!-- Dropdown Filter Tanggal Khas Meta -->
+                <button class="btn-period-picker" onclick="toggleMetaPanel(event)">
+                    <svg style="width:16px; height:16px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span id="textLabelPeriode">Periode: Semua Waktu</span>
+                </button>
+
+                <div class="meta-date-panel" id="metaPanel" onclick="event.stopPropagation()">
+                    <div class="meta-presets">
+                        <button class="preset-item active" onclick="setPreset('semua', this)">Semua Waktu</button>
+                        <button class="preset-item" onclick="setPreset('hariIni', this)">Hari Ini</button>
+                        <button class="preset-item" onclick="setPreset('kemarin', this)">Kemarin</button>
+                        <button class="preset-item" onclick="setPreset('7hari', this)">7 hari terakhir</button>
+                        <button class="preset-item" onclick="setPreset('30hari', this)">30 hari terakhir</button>
+                        <button class="preset-item" onclick="setPreset('bulanIni', this)">Bulan ini</button>
+                        <button class="preset-item" onclick="setPreset('bulanLalu', this)">Bulan lalu</button>
+                        <button class="preset-item" onclick="setPreset('kustom', this)">Kustom</button>
+                    </div>
+                    <div class="meta-custom-content">
+                        <div class="meta-inputs">
+                            <div class="meta-input-field">
+                                <label>TANGGAL MULAI</label>
+                                <input type="date" id="dateMulai" disabled>
+                            </div>
+                            <div class="meta-input-field">
+                                <label>TANGGAL AKHIR</label>
+                                <input type="date" id="dateAkhir" disabled>
+                            </div>
+                        </div>
+                        <div class="meta-actions">
+                            <button class="btn-meta-cancel" onclick="tutupMetaPanel()">Batal</button>
+                            <button class="btn-meta-update" onclick="aplikasikanFilterPeriode()">Update</button>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="text" id="inputCari" class="search-box" placeholder="Cari nama, nomor BSZ, atau kategori..." onkeyup="jalankanFilterGabungan()">
             </div>
         </div>
 
-        <!-- Pembungkus Tabel yang Responsif -->
-        <div class="table-responsive">
-            <table>
+        <!-- Wadah Tabel 6 Kolom Utama -->
+        <div class="table-container">
+            <table id="tabelInvoice">
                 <thead>
                     <tr>
-                        <th style="width: 20%;">Tanggal</th>
-                        <th style="width: 15%;">No BSZ</th>
-                        <th style="width: 25%;">Nama Donatur</th>
-                        <th style="width: 15%;">Kategori</th>
-                        <th style="width: 15%;">Jumlah</th>
-                        <th style="width: 10%;">Aksi</th>
+                        <th>Tanggal</th>
+                        <th>No BSZ</th>
+                        <th>Nama Donatur</th>
+                        <th>Kategori</th>
+                        <th>Jumlah</th>
+                        <th style="text-align: center; width: 120px;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="listInvoice">
-                    <!-- Data otomatis masuk lewat JavaScript -->
+                <tbody id="bodyTabel">
+                    <tr>
+                        <td colspan="6" class="status-msg">Memuat arsip data dari Google Sheets cloud...</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-
     </div>
 
-    <!-- Sistem Penampil & Penyaring Data Otomatis -->
     <script>
-        window.onload = function() {
-            tampilkanDataDashboard();
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyWUi5LevSyzNrf6cYnfWMHX7horHvRrhpz8k7_54iNty8wgq_OG-I__Mj4xRNWtiYS8Q/exec';
+        
+        let masterDataInvoice = []; 
+        let filterTanggalMulai = null;
+        let filterTanggalAkhir = null;
+        let namaPresetTerpilih = "Semua Waktu";
+
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html"; 
         }
 
-        function tampilkanDataDashboard() {
-            let semuaData = JSON.parse(localStorage.getItem('kumpulanInvoice')) || [];
-            let ruteTabel = document.getElementById('listInvoice');
-            let pilihanFilter = document.getElementById('filterWaktu').value;
-            
-            ruteTabel.innerHTML = "";
+        function prosesLogout() {
+            localStorage.removeItem("isLoggedIn");
+            window.location.href = "login.html";
+        }
 
-            function ubahKeTanggalSistem(teksTanggal) {
-                if (!teksTanggal || !teksTanggal.includes(',')) return null;
-                try {
-                    let bagianTanggal = teksTanggal.split(',')[1].trim().toLowerCase();
-                    let pecahan = bagianTanggal.split(' '); 
-                    
-                    if(pecahan.length < 3) return null;
+        // FUNGSI PINTAR: Mengubah teks "Bogor, 28 Juni 2026" menjadi Objek Tanggal Asli Javascript
+        function ubahTeksKeTanggalObj(strTanggal) {
+            if (!strTanggal) return null;
+            try {
+                let bagian = strTanggal.includes(',') ? strTanggal.split(',')[1] : strTanggal;
+                bagian = bagian.trim(); // Hasil: "28 Juni 2026"
+                
+                let komponen = bagian.split(' ');
+                if (komponen.length < 3) return null;
+                
+                let hari = parseInt(komponen[0], 10);
+                let strBulan = komponen[1].toLowerCase();
+                let tahun = parseInt(komponen[2], 10);
+                
+                const listBulan = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
+                let bulanIdx = listBulan.indexOf(strBulan);
+                if (bulanIdx === -1) bulanIdx = 0; 
+                
+                return new Date(tahun, bulanIdx, hari, 0, 0, 0, 0);
+            } catch(e) {
+                return null;
+            }
+        }
 
-                    let tgl = parseInt(pecahan[0]);
-                    let blnStr = pecahan[1];
-                    let thn = parseInt(pecahan[2]);
+        window.onload = async function() {
+            try {
+                let respon = await fetch(WEB_APP_URL);
+                masterDataInvoice = await respon.json();
+                masterDataInvoice.reverse(); // Data terbaru di atas
 
-                    let daftarBulan = {
-                        'januari': 0, 'februari': 1, 'maret': 2, 'april': 3, 'mei': 4, 'juni': 5,
-                        'juli': 6, 'agustus': 7, 'september': 8, 'oktober': 9, 'november': 10, 'desember': 11
-                    };
-
-                    let bln = daftarBulan[blnStr];
-                    if (bln === undefined) return null;
-
-                    return new Date(thn, bln, tgl);
-                } catch(e) {
-                    return null;
-                }
+                renderTabel(masterDataInvoice);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('bodyTabel').innerHTML = `<tr><td colspan="6" class="status-msg" style="color:#ef4444;">Gagal mengambil data dari Google Sheets.</td></tr>`;
             }
 
-            let hariIni = new Date();
+            document.addEventListener('click', function() { tutupMetaPanel(); });
+        }
 
-            let dataDisaring = semuaData.filter(item => {
-                if (pilihanFilter === 'semua') return true;
-
-                let tanggalItem = ubahKeTanggalSistem(item.tanggal);
-                if (!tanggalItem) return true; 
-
-                let selisihWaktu = hariIni - tanggalItem;
-                let selisihHari = selisihWaktu / (1000 * 60 * 60 * 24);
-
-                if (pilihanFilter === 'mingguan') {
-                    return selisihHari >= 0 && selisihHari <= 7;
-                } 
-                
-                if (pilihanFilter === 'bulanan') {
-                    return tanggalItem.getMonth() === hariIni.getMonth() && 
-                           tanggalItem.getFullYear() === hariIni.getFullYear();
-                } 
-                
-                if (pilihanFilter === 'tahunan') {
-                    return tanggalItem.getFullYear() === hariIni.getFullYear();
-                }
-
-                return true;
-            });
-
-            if (dataDisaring.length === 0) {
-                ruteTabel.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af; padding: 20px;">Tidak ada data resi pada periode ini.</td></tr>`;
+        // Mengisi Data ke 6 Kolom Sesuai Contoh Gambar
+        function renderTabel(data) {
+            let bodyTabel = document.getElementById('bodyTabel');
+            if(data.length === 0) {
+                bodyTabel.innerHTML = `<tr><td colspan="6" class="status-msg">Tidak ada data rekap invoice yang cocok.</td></tr>`;
                 return;
             }
 
-            /* ====================================================
-               PERUBAHAN BARU: Urutkan data terbaru paling atas (di-reverse)
-               ==================================================== */
-            let dataTerbaruPalingAtas = [...dataDisaring].reverse();
-
-            dataTerbaruPalingAtas.forEach(item => {
+            bodyTabel.innerHTML = "";
+            data.forEach((item) => {
+                // Normalisasi string jika ada underscore (_) dari database
+                let namaBersih = item.nama ? item.nama.replace(/_/g, ' ') : '-';
+                let kategoriBersih = item.kategori ? item.kategori.replace(/_/g, ' ') : '-';
+                
                 let baris = document.createElement('tr');
-
                 baris.innerHTML = `
-                    <td>${item.tanggal}</td>
-                    <td class="no-bsz-text">${item.noBsz}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.kategori}</td>
-                    <td>${item.jumlah}</td>
-                    <td>
-                        <a href="invoice.html?cetak=${item.noBsz}" class="btn-cetak">Cetak Ulang</a>
+                    <td>${item.tanggal || '-'}</td>
+                    <td class="td-bsz">${item.noBsz || '-'}</td>
+                    <td>${namaBersih}</td>
+                    <td>${kategoriBersih}</td>
+                    <td>${item.jumlah || 'Rp0'}</td>
+                    <td style="text-align: center;">
+                        <a href="invoice.html?cetak=${encodeURIComponent(item.noBsz)}" class="btn-print-table">Cetak Ulang</a>
                     </td>
                 `;
-
-                ruteTabel.appendChild(baris);
+                bodyTabel.appendChild(baris);
             });
+        }
+
+        // Logika Dropdown Interface Meta
+        function toggleMetaPanel(e) {
+            e.stopPropagation();
+            let panel = document.getElementById('metaPanel');
+            panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function tutupMetaPanel() {
+            document.getElementById('metaPanel').style.display = 'none';
+        }
+
+        function setPreset(tipe, elemen) {
+            document.querySelectorAll('.preset-item').forEach(btn => btn.classList.remove('active'));
+            elezen.classList.add('active');
+
+            let inputMulai = document.getElementById('dateMulai');
+            let inputAkhir = document.getElementById('dateAkhir');
+            let sekarang = new Date();
+            sekarang.setHours(0,0,0,0);
+            
+            inputMulai.disabled = true;
+            inputAkhir.disabled = true;
+
+            if (tipe === 'semua') {
+                filterTanggalMulai = null;
+                filterTanggalAkhir = null;
+                namaPresetTerpilih = "Semua Waktu";
+            } else if (tipe === 'hariIni') {
+                filterTanggalMulai = new Date(sekarang);
+                filterTanggalAkhir = new Date(sekarang);
+                namaPresetTerpilih = "Hari Ini";
+            } else if (tipe === 'kemarin') {
+                let kemarin = new Date(sekarang);
+                kemarin.setDate(kemarin.getDate() - 1);
+                filterTanggalMulai = kemarin;
+                filterTanggalAkhir = kemarin;
+                namaPresetTerpilih = "Kemarin";
+            } else if (tipe === '7hari') {
+                let tglMulai = new Date(sekarang);
+                tglMulai.setDate(tglMulai.getDate() - 6);
+                filterTanggalMulai = tglMulai;
+                filterTanggalAkhir = sekarang;
+                namaPresetTerpilih = "7 Hari Terakhir";
+            } else if (tipe === '30hari') {
+                let tglMulai = new Date(sekarang);
+                tglMulai.setDate(tglMulai.getDate() - 29);
+                filterTanggalMulai = tglMulai;
+                filterTanggalAkhir = sekarang;
+                namaPresetTerpilih = "30 Hari Terakhir";
+            } else if (tipe === 'bulanIni') {
+                filterTanggalMulai = new Date(sekarang.getFullYear(), sekarang.getMonth(), 1);
+                filterTanggalAkhir = sekarang;
+                namaPresetTerpilih = "Bulan Ini";
+            } else if (tipe === 'bulanLalu') {
+                filterTanggalMulai = new Date(sekarang.getFullYear(), sekarang.getMonth() - 1, 1);
+                filterTanggalAkhir = new Date(sekarang.getFullYear(), sekarang.getMonth(), 0);
+                namaPresetTerpilih = "Bulan Lalu";
+            } else if (tipe === 'kustom') {
+                inputMulai.disabled = false;
+                inputAkhir.disabled = false;
+                namaPresetTerpilih = "Kustom";
+            }
+
+            if (tipe !== 'semua' && tipe !== 'kustom') {
+                inputMulai.value = formatKeInputDate(filterTanggalMulai);
+                inputAkhir.value = formatKeInputDate(filterTanggalAkhir);
+            } else if (tipe === 'semua') {
+                inputMulai.value = "";
+                inputAkhir.value = "";
+            }
+        }
+
+        function formatKeInputDate(dateObj) {
+            let yyyy = dateObj.getFullYear();
+            let mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            let dd = String(dateObj.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function aplikasikanFilterPeriode() {
+            if (namaPresetTerpilih === "Kustom") {
+                let valMulai = document.getElementById('dateMulai').value;
+                let valAkhir = document.getElementById('dateAkhir').value;
+
+                if (!valMulai || !valAkhir) {
+                    alert("Tentukan rentang tanggal Mulai dan Akhir!");
+                    return;
+                }
+
+                filterTanggalMulai = new Date(valMulai);
+                filterTanggalMulai.setHours(0,0,0,0);
+                filterTanggalAkhir = new Date(valAkhir);
+                filterTanggalAkhir.setHours(0,0,0,0);
+            }
+
+            if (filterTanggalMulai && filterTanggalAkhir) {
+                let opsi = { day: 'numeric', month: 'short', year: 'numeric' };
+                document.getElementById('textLabelPeriode').innerText = `Periode: ${filterTanggalMulai.toLocaleDateString('id-ID', opsi)} - ${filterTanggalAkhir.toLocaleDateString('id-ID', opsi)}`;
+            } else {
+                document.getElementById('textLabelPeriode').innerText = "Periode: Semua Waktu";
+            }
+
+            jalankanFilterGabungan();
+            tutupMetaPanel();
+        }
+
+        // FILTER GABUNGAN UTAMA (Mencari di Kolom Nama, BSZ, Kategori + Rentang Waktu)
+        function jalankanFilterGabungan() {
+            let kataKunci = document.getElementById("inputCari").value.toUpperCase();
+
+            let dataTerfilter = masterDataInvoice.filter(item => {
+                let cocokTeks = true;
+                if (kataKunci) {
+                    let noBsz = (item.noBsz || "").toUpperCase();
+                    let nama = (item.nama || "").toUpperCase();
+                    let kategori = (item.kategori || "").toUpperCase();
+                    cocokTeks = (noBsz.includes(kataKunci) || nama.includes(kataKunci) || kategori.includes(kataKunci));
+                }
+
+                let cocokTanggal = true;
+                if (filterTanggalMulai && filterTanggalAkhir) {
+                    let tglTransaksi = ubahTeksKeTanggalObj(item.tanggal);
+                    if (tglTransaksi) {
+                        cocokTanggal = (tglTransaksi >= filterTanggalMulai && tglTransaksi <= filterTanggalAkhir);
+                    } else {
+                        cocokTanggal = false; 
+                    }
+                }
+
+                return cocokTeks && cocokTanggal;
+            });
+
+            renderTabel(dataTerfilter);
         }
     </script>
 </body>
