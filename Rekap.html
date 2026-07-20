@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Rekapitulasi - LAZ Al Bunyan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background-color: #1e40af;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn-kembali {
+            background-color: #64748b;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-kembali:hover {
+            background-color: #475569;
+        }
+
+        .main-container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            color: #0f4cba;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-box img {
+            max-height: 55px;
+            width: auto;
+        }
+
+        /* Grid Ringkasan (Cards) */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .card-value.highlight {
+            color: #0f4cba;
+        }
+
+        /* Desain Tabel */
+        .table-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #0f4cba;
+            color: white;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 15px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .status-msg {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        @media print {
+            .navbar, .btn-kembali {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+            }
+            .main-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>LAZ Al Bunyan — Ringkasan Laporan</h2>
+        <a href="dashboard.html" class="btn-kembali">← Kembali ke Dashboard</a>
+    </div>
+
+    <div class="main-container">
+        <div class="dashboard-header">
+            <h1>REKAPITULASI & DANA MASUK</h1>
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo LAZ Al Bunyan">
+            </div>
+        </div>
+
+        <!-- Ringkasan Total Masuk -->
+        <div class="summary-grid">
+            <div class="card">
+                <div class="card-title">Total Dana Terkumpul</div>
+                <div class="card-value highlight" id="totalDana">Rp0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Total Transaksi (Invoice)</div>
+                <div class="card-value" id="totalInvoice">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Rata-rata Per Invoice</div>
+                <div class="card-value" id="rataRata">Rp0</div>
+            </div>
+        </div>
+
+        <h2>Breakdown Per Kategori</h2>
+        <!-- Wadah Tabel Kategori -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kategori Program</th>
+                        <th class="text-right" style="width: 250px;">Jumlah Transaksi</th>
+                        <th class="text-right" style="width: 300px;">Total Nominal Uang</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyRekap">
+                    <tr>
+                        <td colspan="3" class="status-msg">Menganalisis data cloud Google Sheets...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyWUi5LevSyzNrf6cYnfWMHX7horHvRrhpz8k7_54iNty8wgq_OG-I__Mj4xRNWtiYS8Q/exec';
+
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html"; 
+        }
+
+        // Fungsi pembantu mengekstrak angka murni dari string Rupiah (cth: "Rp150.000" -> 150000)
+        function bersihkanAngka(str) {
+            if (!str) return 0;
+            let angka = str.replace(/[^0-9]/g, '');
+            return parseInt(angka, 10) || 0;
+        }
+
+        // Mata uang formatter rupiah
+        function formatRupiah(angka) {
+            return 'Rp' + angka.toLocaleString('id-ID');
+        }
+
+        window.onload = async function() {
+            try {
+                let respon = await fetch(WEB_APP_URL);
+                let data = await respon.json();
+
+                prosesDanRenderRekap(data);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('bodyRekap').innerHTML = `<tr><td colspan="3" class="status-msg" style="color:#ef4444;">Gagal memproses data kalkulasi rekap.</td></tr>`;
+            }
+        }
+
+        function prosesDanRenderRekap(dataInvoice) {
+            let totalDana = 0;
+            let totalInvoice = dataInvoice.length;
+            let rekapKategori = {};
+
+            // Kalkulasi akumulasi data
+            dataInvoice.forEach(item => {
+                let nominal = bersihkanAngka(item.jumlah);
+                totalDana += nominal;
+
+                let namaKategori = item.kategori ? item.kategori.replace(/_/g, ' ') : 'Tidak Terkategori';
+                
+                if (!rekapKategori[namaKategori]) {
+                    rekapKategori[namaKategori] = {
+                        hitung: 0,
+                        nominal: 0
+                    };
+                }
+                rekapKategori[namaKategori].hitung += 1;
+                rekapKategori[namaKategori].nominal += nominal;
+            });
+
+            // Update UI Card Atas
+            document.getElementById('totalDana').innerText = formatRupiah(totalDana);
+            document.getElementById('totalInvoice').innerText = totalInvoice + ' Invoice';
+            document.getElementById('rataRata').innerText = formatRupiah(totalInvoice > 0 ? Math.round(totalDana / totalInvoice) : 0);
+
+            // Render ke tabel breakdown
+            let bodyRekap = document.getElementById('bodyRekap');
+            bodyRekap.innerHTML = "";
+
+            let daftarKategori = Object.keys(rekapKategori);
+            
+            if(daftarKategori.length === 0) {
+                bodyRekap.innerHTML = `<tr><td colspan="3" class="status-msg">Tidak ada data untuk direkap.</td></tr>`;
+                return;
+            }
+
+            daftarKategori.forEach(kat => {
+                let baris = document.createElement('tr');
+                baris.innerHTML = `
+                    <td class="font-bold">${kat}</td>
+                    <td class="text-right">${rekapKategori[kat].hitung} Transaksi</td>
+                    <td class="text-right font-bold">${formatRupiah(rekapKategori[kat].nominal)}</td>
+                `;
+                bodyRekap.appendChild(baris);
+            });
+
+            // Tambahkan baris total paling bawah tabel
+            let barisTotal = document.createElement('tr');
+            barisTotal.style.backgroundColor = "#e2e8f0";
+            barisTotal.innerHTML = `
+                <td class="font-bold" style="color: #0f4cba;">TOTAL KESELURUHAN</td>
+                <td class="text-right font-bold" style="color: #0f4cba;">${totalInvoice} Transaksi</td>
+                <td class="text-right font-bold" style="color: #0f4cba;">${formatRupiah(totalDana)}</td>
+            `;
+            bodyRekap.appendChild(barisTotal);
+        }
+    </script>
+</body>
+</html>
