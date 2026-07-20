@@ -343,6 +343,103 @@
             font-weight: 600;
             font-style: italic;
         }
+
+        /* ==========================================================================
+           CSS TAMBAHAN: OPTIMASI RESPONSIVITAS MOBILE (TANPA MERUSAK DESAIN DESKTOP)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            .navbar h2 {
+                font-size: 15px;
+            }
+            .main-container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .dashboard-header h1 {
+                font-size: 20px;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .action-bar > div:first-child {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-create, .btn-rekap {
+                width: 100%;
+                box-sizing: border-box;
+                justify-content: center;
+                text-align: center;
+            }
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            .btn-period-picker {
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+            .search-box {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            /* Solusi Tabel Lembar Kerja Mobile */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            table {
+                min-width: 750px; /* Mencegah tabel menyempit ekstrem di HP */
+            }
+        }
+
+        @media (max-width: 600px) {
+            /* Transformasi Dropdown Filter Tanggal Khas Meta untuk HP */
+            .meta-date-panel {
+                width: 100%;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 45px;
+                flex-direction: column;
+                box-sizing: border-box;
+            }
+            .meta-presets {
+                width: 100%;
+                flex-direction: row;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                overflow-x: auto;
+                padding: 5px 0;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .preset-item {
+                display: inline-block;
+                padding: 10px 15px;
+                font-size: 12px;
+                flex-shrink: 0;
+                text-align: center;
+            }
+            .meta-custom-content {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -362,7 +459,7 @@
         </div>
 
         <div class="action-bar">
-            <!-- MODIFIKASI: Ditambahkan flex wrapper agar susunan tombol rapi & berdampingan -->
+            <!-- Wrapper Tombol Aksi -->
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                 <a href="invoice.html" class="btn-create">+ Buat Invoice Baru</a>
                 
@@ -537,7 +634,7 @@
 
         function setPreset(tipe, elemen) {
             document.querySelectorAll('.preset-item').forEach(btn => btn.classList.remove('active'));
-            elezen.classList.add('active');
+            elemen.classList.add('active'); // Memperbaiki typo 'elezen' menjadi 'elemen'
 
             let inputMulai = document.getElementById('dateMulai');
             let inputAkhir = document.getElementById('dateAkhir');
